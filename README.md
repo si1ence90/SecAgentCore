@@ -7,7 +7,7 @@
 [![Python](https://img.shields.io/badge/Python-3.10+-blue.svg)](https://www.python.org/)
 [![License](https://img.shields.io/badge/License-MIT-green.svg)](LICENSE)
 
-*让 AI 智能体帮你完成网络安全任务*
+*让 AI 智能体帮你自动化的完成各种繁琐的网络安全任务*
 
 </div>
 
@@ -15,7 +15,7 @@
 
 ## 📖 项目简介
 
-**SecAgent-Core** 是一个基于 ReAct (Reasoning + Acting) 循环的网络安全智能体系统。它能够理解自然语言描述的安全任务，自动规划执行步骤，调用相应的安全工具，并生成结构化的分析报告。
+**SecAgent-Core** 是一个基于 ReAct (Reasoning + Acting) 循环的网络安全智能体系统。它能够理解自然语言描述的安全任务，自动规划执行步骤，调用相应的安全工具，并生成结构化的分析报告，提升安全工作的效率。
 
 ### 核心特性
 
@@ -410,6 +410,6 @@ tools:
 
 <div align="center">
 
-**Made with ❤️ by Si1ence**
+**Made with ❤️ by si1ence**
 
 </div>
