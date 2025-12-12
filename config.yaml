@@ -1,0 +1,94 @@
+# SecAgent-Core 配置文件
+
+# LLM 提供商配置
+llm:
+  # 默认提供商（deepseek-chat 或 qwen-max）
+  provider: deepseek
+  
+  # DeepSeek 配置
+  deepseek:
+    api_key: ${DEEPSEEK_API_KEY}  # 从环境变量读取
+    base_url: https://api.deepseek.com/v1
+    model: deepseek-reasoner
+    temperature: 0.7
+    max_tokens: 4096
+  
+  # Qwen 配置
+  qwen-max:
+    api_key: ${QWEN_API_KEY}  # 从环境变量读取
+    base_url: https://dashscope.aliyuncs.com/compatible-mode/v1
+    model: qwen-max
+    temperature: 0.7
+    max_tokens: 4096
+
+# Agent 配置
+agent:
+  # 最大迭代次数（防止无限循环）
+  max_iterations: 10
+  
+  # 是否启用人机协同（默认关闭，让模型自主完成任务）
+  enable_human_in_the_loop: false
+  
+  # 需要人工确认的操作类型（仅在 enable_human_in_the_loop 为 true 时生效）
+  require_confirmation_for:
+    - "删除文件"
+    - "修改系统配置"
+    - "执行高风险扫描"
+    - "网络攻击"
+
+# 工具配置
+tools:
+  # 端口扫描配置
+  port_scan:
+    default_timeout: 5
+    default_threads: 10
+  
+  # 文件分析配置
+  file_analyzer:
+    max_file_size_mb: 10
+  
+  # 微步在线威胁情报工具配置
+  threatbook:
+    api_key: ${THREATBOOK_API_KEY}  # 从环境变量读取，或直接在此配置
+  
+  # PCAP 分析工具配置
+  pcap_analysis:
+    # 默认导出目录
+    default_export_dir: exports
+    # 最大数据包数量（0表示无限制）
+    max_packets: 0
+    # 默认查询结果限制
+    default_limit: 1000
+  
+  # 通知工具配置
+  notification:
+    # 邮箱配置
+    email:
+      smtp_host: ${EMAIL_SMTP_HOST}  # SMTP服务器地址，如 smtp.qq.com, smtp.gmail.com
+      smtp_port: ${EMAIL_SMTP_PORT}  # SMTP端口，如 587, 465
+      username: ${EMAIL_USERNAME}  # 邮箱用户名
+      password: ${EMAIL_PASSWORD}  # 邮箱密码或授权码
+      from: ${EMAIL_FROM}  # 发件人地址（可选，默认使用username）
+      use_tls: true  # 是否使用TLS加密
+    
+    # 微信配置（预留，未实现）
+    wechat:
+      app_id: ${WECHAT_APP_ID}  # 微信应用ID
+      app_secret: ${WECHAT_APP_SECRET}  # 微信应用密钥
+    
+    # 第三方IM配置（预留，未实现）
+    im:
+      api_url: ${IM_API_URL}  # 第三方IM API地址
+      api_key: ${IM_API_KEY}  # 第三方IM API密钥
+    
+    # 短信配置（预留，未实现）
+    sms:
+      api_url: ${SMS_API_URL}  # 短信服务API地址
+      api_key: ${SMS_API_KEY}  # 短信服务API密钥
+
+# UI 配置（Streamlit）
+ui:
+  title: "SecAgent-Core - 超级网络安全智能体"
+  page_icon: "🔒"
+
+

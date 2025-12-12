@@ -1,0 +1,200 @@
+PCAP 网络流量分析与查询工具使用指南
+========================================
+
+工具名称: pcap_analysis
+
+功能概述
+--------
+PCAP分析工具用于解析和分析网络流量捕获文件（.pcap或.cap格式），将数据包转换为结构化数据，
+并支持使用类似SQL或Pandas的语法进行灵活查询和过滤。
+
+核心功能
+--------
+1. 解析PCAP文件：支持.pcap和.cap格式的网络流量文件
+2. 数据转换：将数据包转换为包含以下字段的结构化数据：
+   - packet_id: 数据包序号
+   - timestamp: 时间戳
+   - time_str: 格式化的时间字符串
+   - length: 数据包长度
+   - protocol: 协议类型（TCP、UDP、ICMP、ARP、DNS等）
+   - src_ip: 源IP地址
+   - dst_ip: 目标IP地址
+   - src_port: 源端口
+   - dst_port: 目标端口
+   - src_mac: 源MAC地址
+   - dst_mac: 目标MAC地址
+   - flags: TCP标志位
+   - payload_length: 负载长度
+   - has_payload: 是否有负载
+   - 其他协议特定字段（如ICMP类型、DNS查询名等）
+
+3. 灵活查询：
+   - Pandas查询：使用pandas query语法，如 "src_ip == '192.168.1.1' and protocol == 'TCP'"
+   - SQL查询：使用标准SQL语法，如 "SELECT * FROM df WHERE src_ip = '192.168.1.1' AND protocol = 'TCP'"
+
+4. 结果导出：支持导出为CSV、JSON、Excel格式
+
+参数说明
+--------
+必需参数：
+- pcap_file (string): PCAP文件路径，支持.pcap和.cap格式
+
+可选参数：
+- query (string): 查询语句
+  - 如果query_type为'pandas'，使用pandas query语法
+  - 如果query_type为'sql'，使用SQL语法
+  - 示例（Pandas）: "src_ip == '192.168.1.1' and protocol == 'TCP'"
+  - 示例（SQL）: "SELECT * FROM df WHERE src_ip = '192.168.1.1' AND protocol = 'TCP'"
+
+- query_type (string): 查询类型，'pandas'（默认）或'sql'
+- export_format (string): 导出格式，'csv'、'json'、'excel'或None（不导出）
+- export_path (string): 导出文件路径（如果未指定，自动生成在exports目录）
+- limit (integer): 限制返回结果数量
+- protocols (list): 协议过滤列表，如['TCP', 'UDP', 'ICMP']
+- src_ip (string): 源IP地址过滤
+- dst_ip (string): 目标IP地址过滤
+- src_port (integer): 源端口过滤
+- dst_port (integer): 目标端口过滤
+
+使用示例
+--------
+
+示例1: 基本分析（不查询，只获取统计信息）
+{
+  "action": "pcap_analysis",
+  "action_input": {
+    "pcap_file": "capture.pcap"
+  }
+}
+
+示例2: 使用Pandas查询过滤TCP流量
+{
+  "action": "pcap_analysis",
+  "action_input": {
+    "pcap_file": "capture.pcap",
+    "query": "protocol == 'TCP' and src_port == 80",
+    "query_type": "pandas"
+  }
+}
+
+示例3: 使用SQL查询查找特定IP的流量
+{
+  "action": "pcap_analysis",
+  "action_input": {
+    "pcap_file": "capture.pcap",
+    "query": "SELECT * FROM df WHERE src_ip = '192.168.1.100' OR dst_ip = '192.168.1.100'",
+    "query_type": "sql"
+  }
+}
+
+示例4: 使用基础过滤参数（推荐，性能更好）
+{
+  "action": "pcap_analysis",
+  "action_input": {
+    "pcap_file": "capture.pcap",
+    "protocols": ["TCP", "UDP"],
+    "src_ip": "192.168.1.1",
+    "limit": 100
+  }
+}
+
+示例5: 分析并导出结果
+{
+  "action": "pcap_analysis",
+  "action_input": {
+    "pcap_file": "capture.pcap",
+    "query": "protocol == 'TCP' and payload_length > 100",
+    "export_format": "csv",
+    "export_path": "tcp_large_packets.csv"
+  }
+}
+
+示例6: 查找DNS查询
+{
+  "action": "pcap_analysis",
+  "action_input": {
+    "pcap_file": "capture.pcap",
+    "query": "protocol == 'DNS'",
+    "query_type": "pandas"
+  }
+}
+
+示例7: 查找特定时间段的流量
+{
+  "action": "pcap_analysis",
+  "action_input": {
+    "pcap_file": "capture.pcap",
+    "query": "timestamp >= 1609459200 and timestamp <= 1609545600",
+    "query_type": "pandas"
+  }
+}
+
+Pandas查询语法参考
+-----------------
+支持的运算符：
+- 比较: ==, !=, <, <=, >, >=
+- 逻辑: and, or, not
+- 成员: in, not in
+- 字符串: contains, startswith, endswith
+
+常用查询示例：
+- "protocol == 'TCP'" - 查找TCP流量
+- "src_ip == '192.168.1.1' and dst_port == 80" - 查找从192.168.1.1到80端口的流量
+- "length > 1000" - 查找大于1000字节的数据包
+- "src_ip in ['192.168.1.1', '192.168.1.2']" - 查找多个源IP
+- "protocol == 'TCP' and flags == 2" - 查找TCP SYN包
+- "has_payload == True" - 查找有负载的数据包
+
+SQL查询语法参考
+--------------
+在SQL查询中，DataFrame被命名为'df'。
+
+常用SQL查询示例：
+- "SELECT * FROM df WHERE protocol = 'TCP'" - 查找TCP流量
+- "SELECT src_ip, dst_ip, COUNT(*) as count FROM df GROUP BY src_ip, dst_ip ORDER BY count DESC" - 统计IP对流量
+- "SELECT protocol, COUNT(*) as count FROM df GROUP BY protocol" - 按协议统计
+- "SELECT * FROM df WHERE src_ip = '192.168.1.1' AND dst_port = 80" - 查找特定IP和端口
+- "SELECT * FROM df WHERE length > 1000 ORDER BY timestamp DESC" - 查找大包并按时间排序
+
+返回结果说明
+------------
+工具返回一个包含以下信息的字典：
+- total_packets: 总数据包数量
+- filtered_packets: 过滤后的数据包数量
+- query_result_count: 查询结果数量
+- statistics: 统计信息
+  - protocol_distribution: 协议分布
+  - top_source_ips: 前10个源IP
+  - top_destination_ips: 前10个目标IP
+  - top_ports: 前10个端口
+  - total_bytes: 总字节数
+  - average_packet_size: 平均数据包大小
+  - time_range: 时间范围
+- sample_data: 前10条样本数据
+- columns: 数据列名列表
+- export_info: 导出信息（如果执行了导出）
+
+最佳实践
+--------
+1. 对于大型PCAP文件，建议先使用基础过滤参数（protocols, src_ip等）减少数据量，再使用query进行精细查询
+2. 如果只需要统计信息，可以不提供query参数
+3. 使用limit参数限制结果数量，避免返回过多数据
+4. 对于复杂查询，SQL语法可能更直观
+5. 导出结果时，建议指定export_path以避免文件名冲突
+
+注意事项
+--------
+1. 需要安装scapy库：pip install scapy
+2. SQL查询需要安装pandasql库：pip install pandasql（可选）
+3. Excel导出需要安装openpyxl库：pip install openpyxl（可选）
+4. 大型PCAP文件解析可能需要较长时间，请耐心等待
+5. 查询结果默认返回前10条样本数据，完整数据需要通过导出获取
+
+常见使用场景
+------------
+1. 网络流量分析：分析网络中的流量模式和异常
+2. 安全事件调查：查找特定IP、端口或协议的流量
+3. 性能分析：分析大包、重传、异常流量等
+4. 协议分析：统计各协议的使用情况
+5. 时间序列分析：分析特定时间段的网络活动
+

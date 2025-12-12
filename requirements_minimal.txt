@@ -1,0 +1,25 @@
+# SecAgent-Core 最小依赖版本（不包含 Streamlit）
+# 适用于 32 位 Python 或不想安装 streamlit 的情况
+# 注意：此版本只包含核心功能，使用命令行界面
+
+# 核心依赖
+python-dotenv>=1.0.0
+pyyaml>=6.0.1
+pydantic>=2.5.0
+openai>=1.0.0,<2.0.0
+requests>=2.31.0  # 用于威胁情报工具
+
+# 网络工具（可选，如果不需要可以注释掉）
+# python-nmap>=0.7.1
+
+# 工具类
+typing-extensions>=4.9.0
+
+# Markdown 处理（报告生成工具）
+markdown>=3.4.0
+
+# 注意：此版本不需要 Flask 或其他 Web 框架
+# 所有功能通过命令行界面 (app_cli.py) 使用
+
+
+

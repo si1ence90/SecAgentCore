@@ -1,0 +1,33 @@
+# SecAgent-Core 依赖包
+# 
+# 注意：
+# - Web 界面版本需要 64 位 Python 3.10+
+# - 32 位 Python 请使用 requirements_minimal.txt 和命令行版本 (app_cli.py)
+
+# 核心依赖
+python-dotenv>=1.0.0
+pyyaml>=6.0.1
+pydantic>=2.5.0
+openai>=1.0.0,<2.0.0
+requests>=2.31.0  # 用于威胁情报工具
+
+# Web UI 框架 (需要 64 位 Python)
+# streamlit 依赖 pandas -> pyarrow, pyarrow 不支持 32 位 Windows
+streamlit>=1.31.0
+
+# 网络工具 (可选)
+python-nmap>=0.7.1
+
+# 工具类
+typing-extensions>=4.9.0
+
+# Markdown 处理（报告生成工具）
+markdown>=3.4.0
+
+# PCAP 分析工具
+scapy>=2.5.0  # 网络数据包分析
+pandasql>=0.7.3  # SQL查询支持（可选，用于SQL查询功能）
+openpyxl>=3.1.0  # Excel导出支持（可选）
+
+
+
