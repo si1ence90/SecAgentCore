@@ -32,6 +32,9 @@
 
 SecAgent-Core 采用 **ReAct (Reasoning + Acting)** 循环架构，通过思考-行动-观察的循环来完成任务。
 
+<img width="1719" height="852" alt="image" src="https://github.com/user-attachments/assets/11b10020-cb22-4058-a247-09eb32301e0c" />
+<img width="1722" height="843" alt="image" src="https://github.com/user-attachments/assets/80b43dcb-2368-4256-8dcc-89347c1a02fc" />
+
 ### ReAct 循环流程
 
 ```
@@ -105,6 +108,9 @@ SecAgent-Core 集成了以下安全工具，持续扩展中：
 
 **知识库**: `knowledge_base/pcap_analysis.txt`
 
+<img width="1761" height="1014" alt="image" src="https://github.com/user-attachments/assets/4b3a241b-503b-4a04-8ba8-24321a095d47" />
+
+
 ---
 
 ### 🛡️ 场景 2: IP 威胁情报查询
@@ -120,6 +126,8 @@ SecAgent-Core 集成了以下安全工具，持续扩展中：
 
 **知识库**: 通用知识库
 
+<img width="1755" height="1080" alt="image" src="https://github.com/user-attachments/assets/30bd1fb0-34ba-4e5f-95b0-e14dedd97312" />
+
 ---
 
 ### 🌐 场景 3: 主机和端口扫描
@@ -134,6 +142,9 @@ SecAgent-Core 集成了以下安全工具，持续扩展中：
 **流程**: `network_ping` → `port_scan` → 服务识别 → `report_generator`
 
 **知识库**: `knowledge_base/port_scanning.txt`
+
+<img width="2121" height="1059" alt="image" src="https://github.com/user-attachments/assets/00b37eff-a0e5-413f-b903-aa1e09d1f346" />
+
 
 ---
 
