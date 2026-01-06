@@ -25,6 +25,8 @@
 - 📊 **自动报告生成**: 自动整理执行结果，生成 Markdown 和 HTML 报告
 - 🔄 **智能错误修复**: 自动修复工具参数错误，提高执行成功率
 - 📝 **详细日志记录**: 完整的执行日志，便于审计和调试
+<img width="1941" height="1374" alt="mermaid-diagram-2026-01-06-150454" src="https://github.com/user-attachments/assets/de4f7293-8196-4e6f-b1c4-41626e408e09" />
+
 
 ---
 
